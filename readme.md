@@ -1,12 +1,9 @@
 # Create REST API in Laravel 6.0 with authentication using Passport #
 
 ## Steps to get following web services ##
-
-S.N  | API
----- | -------------
-1.   | Login API
-2.   | Register API
-3.   | Details API
+1. Login API
+2. Register API
+3. Details API
 
 ### Step 1: Install Laravel ###
 composer create project laravel/laravel project_name --prefer-dist
@@ -42,7 +39,7 @@ Route::group(['middleware' => 'auth:api'], function() {
 ### Step 6: Create the controller ###
 At last we create a new controller and three API method in UserController
 
-`
+```
 <?php
 namespace App\Http\Controllers\API;
 use Illuminate\Http\Request; 
@@ -52,12 +49,8 @@ use Illuminate\Support\Facades\Auth;
 use Validator;
 class UserController extends Controller 
 {
-public $successStatus = 200;
-/** 
-     * login api 
-     * 
-     * @return \Illuminate\Http\Response 
-     */ 
+    public $successStatus = 200;
+
     public function login(){ 
         if(Auth::attempt(['email' => request('email'), 'password' => request('password')])){ 
             $user = Auth::user(); 
@@ -68,11 +61,7 @@ public $successStatus = 200;
             return response()->json(['error'=>'Unauthorised'], 401); 
         } 
     }
-/** 
-     * Register api 
-     * 
-     * @return \Illuminate\Http\Response 
-     */ 
+
     public function register(Request $request) 
     { 
         $validator = Validator::make($request->all(), [ 
@@ -81,28 +70,28 @@ public $successStatus = 200;
             'password' => 'required', 
             'c_password' => 'required|same:password', 
         ]);
-if ($validator->fails()) { 
+        
+        if ($validator->fails()) { 
             return response()->json(['error'=>$validator->errors()], 401);            
         }
-$input = $request->all(); 
+        
+        $input = $request->all(); 
         $input['password'] = bcrypt($input['password']); 
         $user = User::create($input); 
         $success['token'] =  $user->createToken('MyApp')-> accessToken; 
         $success['name'] =  $user->name;
-return response()->json(['success'=>$success], $this-> successStatus); 
+        
+        return response()->json(['success'=>$success], $this-> successStatus); 
     }
-/** 
-     * details api 
-     * 
-     * @return \Illuminate\Http\Response 
-     */ 
+
     public function details() 
     { 
         $user = Auth::user(); 
         return response()->json(['success' => $user], $this-> successStatus); 
     } 
 }
-`
+```
+
 To run code :
 `php artisan serve`
 
