@@ -13,10 +13,10 @@ composer require laravel/passport
 
 ### Step 3: Run Migration and Install
 Run migration command to get new tables in database:
-        php artisan migrate
+```php artisan migrate```
 
-using passport:install command, it will create token keys for security:
-        php artisan passport:install
+Using passport:install command, it will create token keys for security:
+ ```php artisan passport:install```
 
 ### Step 4: Passport Configuration ###
 We need to configure files on three places:
@@ -28,13 +28,13 @@ We need to configure files on three places:
 Laravel provides api.php for web services route. 
 
 #### routes/api.php ###
-` 
+```
 Route::post('login', 'API\UserController@login');
 Route::post('register', 'API\UserController@register');
 Route::group(['middleware' => 'auth:api'], function() {
     Route::post('details', 'API\UserController@details');
 });
-`
+```
 
 ### Step 6: Create the controller ###
 At last we create a new controller and three API method in UserController
